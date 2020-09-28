@@ -2,19 +2,16 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
-	//	"io/ioutil"
-	//	"log"
-	//	"log/syslog"
-	//	"net/http"
-	//	"os"
-	//    "encoding/json"
 )
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("243209099:AAHe2gSekOqgxwo3-keW01TSTPtcT6Gmrzw") // create new bot
+
+	arg := os.Args[1]
+	bot, err := tgbotapi.NewBotAPI(arg) // create new bot
 	if err != nil {
 		fmt.Println(err)
 	}
