@@ -29,26 +29,27 @@ func main() {
 			continue
 		}
 
-		text := engru(update.InlineQuery.Query)
+		texter := engru(update.InlineQuery.Query)
+		textre := rueng(update.InlineQuery.Query)
 		textter := translitenru(update.InlineQuery.Query)
 		texttre := translitruen(update.InlineQuery.Query)
 		user := update.InlineQuery.From.UserName
-		article := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID, "Swap keyboard en -> ru", text)
-		article.Description = text
-		article0 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_1", "Translit en -> ru", textter)
-		article0.Description = textter
-		article1 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_2", "Translit ru -> en", texttre)
-		article1.Description = texttre
-		article2 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_3", "Think italic", "@"+user+" <i>"+update.InlineQuery.Query+"</i>")
-		article2.Description = "@" + user + " <i>" + update.InlineQuery.Query + "</i>"
-		article3 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_4", "Think bold", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
-		article3.Description = "@" + user + " <b>" + update.InlineQuery.Query + "</b>"
-		fmt.Printf("User:%s Send %s Recode:%s Translit en->ru %s Translit ru->en %s Think italic %s Think bold %s\n", user, update.InlineQuery.Query, text, textter, texttre, "@"+user+" <i>"+update.InlineQuery.Query+"</i>", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
+		article := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID, "Swap keyboard en -> ru", texter)
+		article.Description = texter
+		article0 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_0", "Swap keyboard ru -> en", textre)
+		article0.Description = textre
+		article1 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_1", "Translit en -> ru", textter)
+		article1.Description = textter
+		article2 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_2", "Translit ru -> en", texttre)
+		article2.Description = texttre
+		article3 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_3", "Think italic", "@"+user+" <i>"+update.InlineQuery.Query+"</i>")
+		article3.Description = "@" + user + " <i>" + update.InlineQuery.Query + "</i>"
+		article4 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_4", "Think bold", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
+		article4.Description = "@" + user + " <b>" + update.InlineQuery.Query + "</b>"
+		fmt.Printf("User:%s Send %s Recode en->ru:%s Recode ru->en:%s Translit en->ru %s Translit ru->en %s Think italic %s Think bold %s\n", user, update.InlineQuery.Query, texter, textre, textter, texttre, "@"+user+" <i>"+update.InlineQuery.Query+"</i>", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
 
 		var t []interface{}
 		t = append(t, article, article0, article1, article2, article3)
-		//a,_ := json.Marshal(t)
-		//log.Println(string(a))
 		inlineConf := tgbotapi.InlineConfig{
 			InlineQueryID: update.InlineQuery.ID,
 			IsPersonal:    false,
@@ -132,6 +133,79 @@ func engru(s string) string {
 		"~", "Ё",
 		"`", "ё",
 		"^", ",")
+	return r.Replace(s)
+}
+
+func rueng(s string) string {
+	r := strings.NewReplacer(
+		"Й", "Q",
+		"Ц", "W",
+		"У", "E",
+		"К", "R",
+		"Е", "T",
+		"Н", "Y",
+		"Г", "U",
+		"Ш", "I",
+		"Щ", "O",
+		"З", "P",
+		"Х", "[",
+		"Ъ", "]",
+		"Ф", "A",
+		"Ы", "S",
+		"В", "D",
+		"А", "F",
+		"П", "G",
+		"Р", "H",
+		"О", "J",
+		"Л", "K",
+		"Д", "L",
+		"Ж", ";",
+		"Э", "\"",
+		"Я", "Z",
+		"Ч", "X",
+		"С", "C",
+		"М", "V",
+		"И", "B",
+		"Т", "N",
+		"Ь", "M",
+		"Б", "<",
+		"Ю", ">",
+		"й", "q",
+		"ц", "w",
+		"у", "e",
+		"к", "r",
+		"е", "t",
+		"н", "y",
+		"г", "u",
+		"ш", "i",
+		"щ", "o",
+		"з", "p",
+		"х", "[",
+		"ъ", "]",
+		"ф", "a",
+		"ы", "s",
+		"в", "d",
+		"а", "f",
+		"п", "g",
+		"р", "h",
+		"о", "j",
+		"л", "k",
+		"д", "l",
+		"ж", ";",
+		"э", "'",
+		"я", "z",
+		"ч", "x",
+		"с", "c",
+		"м", "v",
+		"и", "b",
+		"т", "n",
+		"ь", "m",
+		"б", ",",
+		"ю", ".",
+		",", "?",
+		"Ё", "~",
+		"ё", "`",
+		",", "^")
 	return r.Replace(s)
 }
 
