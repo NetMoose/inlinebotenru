@@ -49,7 +49,7 @@ func main() {
 		fmt.Printf("User:%s Send %s Recode en->ru:%s Recode ru->en:%s Translit en->ru %s Translit ru->en %s Think italic %s Think bold %s\n", user, update.InlineQuery.Query, texter, textre, textter, texttre, "@"+user+" <i>"+update.InlineQuery.Query+"</i>", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
 
 		var t []interface{}
-		t = append(t, article, article0, article1, article2, article3)
+		t = append(t, article, article0, article1, article2, article3, article4)
 		inlineConf := tgbotapi.InlineConfig{
 			InlineQueryID: update.InlineQuery.ID,
 			IsPersonal:    false,
