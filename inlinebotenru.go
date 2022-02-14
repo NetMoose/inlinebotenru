@@ -42,7 +42,7 @@ func main() {
 	for update := range updates {
 		if update.InlineQuery == nil { // if no inline query, send static help and ignore it
 			user := "Unknown"
-			if update.Message.From != nil {
+			if update.Message != nil {
 				user = update.Message.From.String()
 			}
 			if update.Message.Photo != nil {
