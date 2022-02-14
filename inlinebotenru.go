@@ -44,36 +44,37 @@ func main() {
 			user := "Unknown"
 			if update.Message != nil {
 				user = update.Message.From.String()
-			}
-			if update.Message.Photo != nil {
-				fmt.Printf("User: %s send into bot directly photo\n", user)
-			}
-			if update.Message.Animation != nil {
-				fmt.Printf("User: %s send into bot directly animation\n", user)
-			}
-			if update.Message.Audio != nil {
-				fmt.Printf("User: %s send into bot directly audio\n", user)
-			}
-			if update.Message.Document != nil {
-				fmt.Printf("User: %s send into bot directly document\n", user)
-			}
-			if update.Message.Location != nil {
-				fmt.Printf("User: %s send into bot directly location:%f, %f\n", user, update.Message.Location.Latitude, update.Message.Location.Longitude)
-			}
-			if update.Message.Sticker != nil {
-				fmt.Printf("User: %s send into bot directly sticker\n", user)
-			}
-			if update.Message.Video != nil {
-				fmt.Printf("User: %s send into bot directly video\n", user)
-			}
-			if update.Message.Voice != nil {
-				fmt.Printf("User: %s send into bot directly voice message\n", user)
-			}
-			if update.Message.Text != "" {
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
-				bot.Send(msg)
-				message := update.Message.Text
-				fmt.Printf("User: %s send into bot directly: %s\n", user, message)
+
+				if update.Message.Photo != nil {
+					fmt.Printf("User: %s send into bot directly photo\n", user)
+				}
+				if update.Message.Animation != nil {
+					fmt.Printf("User: %s send into bot directly animation\n", user)
+				}
+				if update.Message.Audio != nil {
+					fmt.Printf("User: %s send into bot directly audio\n", user)
+				}
+				if update.Message.Document != nil {
+					fmt.Printf("User: %s send into bot directly document\n", user)
+				}
+				if update.Message.Location != nil {
+					fmt.Printf("User: %s send into bot directly location:%f, %f\n", user, update.Message.Location.Latitude, update.Message.Location.Longitude)
+				}
+				if update.Message.Sticker != nil {
+					fmt.Printf("User: %s send into bot directly sticker\n", user)
+				}
+				if update.Message.Video != nil {
+					fmt.Printf("User: %s send into bot directly video\n", user)
+				}
+				if update.Message.Voice != nil {
+					fmt.Printf("User: %s send into bot directly voice message\n", user)
+				}
+				if update.Message.Text != "" {
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
+					bot.Send(msg)
+					message := update.Message.Text
+					fmt.Printf("User: %s send into bot directly: %s\n", user, message)
+				}
 			}
 			continue
 		}
