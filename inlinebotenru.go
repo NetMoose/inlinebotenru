@@ -41,7 +41,10 @@ func main() {
 
 	for update := range updates {
 		if update.InlineQuery == nil { // if no inline query, send static help and ignore it
-			user := update.Message.From
+			user := "Unknown"
+			if update.Message.From != nil {
+				user = update.Message.From.String()
+			}
 			if update.Message.Photo != nil {
 				fmt.Printf("User: %s send into bot directly photo\n", user)
 			}
