@@ -25,40 +25,62 @@ func main() {
 	updates, err := bot.GetUpdatesChan(u)
 
 	for update := range updates {
-		if update.InlineQuery == nil { // if no inline query, ignore it
+		if update.InlineQuery == nil { // if no inline query, send static help and ignore it
+			reply := "Добро пожаловать. Обычно боты - это что-то отвечающее на команды, отдаваемые вами прямо тут, вроде /start.\n" +
+				"Но я работаю не так. Поэтому писать сюда команды или какой-то текст абсолютно бесполезно, " +
+				"я все равно тут отвечу только этим сообщением.\n" +
+				"А вот, чтобы использовать мои возможности правильно, сделайте следующее:\n" +
+				"1. Перейдите в какой-нибудь другой чат.\n" +
+				"2. В начале строки сообщения напишите: @swp_bot (@swp_bot должно обязательно быть в самом начале строки), " +
+				"сделайте пробел и увидите вращающийся значок. Это я жду вашего ввода.\n" +
+				"3. Далее, после пробела смело вводите, или вставляйте скопированный вами откуда-то текст и я покажу вам меню," +
+				" где постараюсь, " +
+				"в меру своих возможностей, что-то с ним сделать.\nНапример, если он набран русскими буквами в английской раскладке, " +
+				"постараюсь исправить её.\nТоже самое попробую сделать с английским текстом в русской раскладке.\nЭто и была основная задумка " +
+				"при моём создании, кстати.\nПотом к моим возможностям добавился также перевод набранного в транслит.\nНу и еще я могу сделать " +
+				"ваш текст наклонным, или выделить его полужирным. Всё это будет представлено в том самом выпадающем меню.\n" +
+				"Вот собственно и все, что я умею.\n" +
+				"Но зато меня можно вызвать в любом чате, не добавляя в его участники и я прекрасно отработаю, как это описано выше."
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
+			bot.Send(msg)
+			user := update.Message.From
+			message := update.Message.Text
+			fmt.Printf("User: %s send into bot directly: %s\n", user, message)
 			continue
 		}
 
-		texter := engru(update.InlineQuery.Query)
-		textre := rueng(update.InlineQuery.Query)
-		textter := translitenru(update.InlineQuery.Query)
-		texttre := translitruen(update.InlineQuery.Query)
-		user := update.InlineQuery.From.UserName
-		article := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID, "Swap keyboard en -> ru", texter)
-		article.Description = texter
-		article0 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_0", "Swap keyboard ru -> en", textre)
-		article0.Description = textre
-		article1 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_1", "Translit en -> ru", textter)
-		article1.Description = textter
-		article2 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_2", "Translit ru -> en", texttre)
-		article2.Description = texttre
-		article3 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_3", "Think italic", "@"+user+" <i>"+update.InlineQuery.Query+"</i>")
-		article3.Description = "@" + user + " <i>" + update.InlineQuery.Query + "</i>"
-		article4 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_4", "Think bold", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
-		article4.Description = "@" + user + " <b>" + update.InlineQuery.Query + "</b>"
-		fmt.Printf("User:%s Send %s Recode en->ru:%s Recode ru->en:%s Translit en->ru %s Translit ru->en %s Think italic %s Think bold %s\n", user, update.InlineQuery.Query, texter, textre, textter, texttre, "@"+user+" <i>"+update.InlineQuery.Query+"</i>", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
+		if "" != update.InlineQuery.Query {
+			texter := engru(update.InlineQuery.Query)
+			textre := rueng(update.InlineQuery.Query)
+			textter := translitenru(update.InlineQuery.Query)
+			texttre := translitruen(update.InlineQuery.Query)
+			user := update.InlineQuery.From.UserName
+			article := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID, "Swap keyboard en -> ru", texter)
+			article.Description = texter
+			article0 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_0", "Swap keyboard ru -> en", textre)
+			article0.Description = textre
+			article1 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_1", "Translit en -> ru", textter)
+			article1.Description = textter
+			article2 := tgbotapi.NewInlineQueryResultArticle(update.InlineQuery.ID+"_2", "Translit ru -> en", texttre)
+			article2.Description = texttre
+			article3 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_3", "Think italic", "@"+user+" <i>"+update.InlineQuery.Query+"</i>")
+			article3.Description = "@" + user + " <i>" + update.InlineQuery.Query + "</i>"
+			article4 := tgbotapi.NewInlineQueryResultArticleHTML(update.InlineQuery.ID+"_4", "Think bold", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
+			article4.Description = "@" + user + " <b>" + update.InlineQuery.Query + "</b>"
+			fmt.Printf("User:%s Send %s Recode en->ru:%s Recode ru->en:%s Translit en->ru %s Translit ru->en %s Think italic %s Think bold %s\n", user, update.InlineQuery.Query, texter, textre, textter, texttre, "@"+user+" <i>"+update.InlineQuery.Query+"</i>", "@"+user+" <b>"+update.InlineQuery.Query+"</b>")
 
-		var t []interface{}
-		t = append(t, article, article0, article1, article2, article3, article4)
-		inlineConf := tgbotapi.InlineConfig{
-			InlineQueryID: update.InlineQuery.ID,
-			IsPersonal:    false,
-			CacheTime:     0,
-			Results:       t,
-		}
+			var t []interface{}
+			t = append(t, article, article0, article1, article2, article3, article4)
+			inlineConf := tgbotapi.InlineConfig{
+				InlineQueryID: update.InlineQuery.ID,
+				IsPersonal:    false,
+				CacheTime:     0,
+				Results:       t,
+			}
 
-		if _, err := bot.AnswerInlineQuery(inlineConf); err != nil {
-			fmt.Println(err)
+			if _, err := bot.AnswerInlineQuery(inlineConf); err != nil {
+				fmt.Println(err)
+			}
 		}
 	}
 }
